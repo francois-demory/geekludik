@@ -21,59 +21,68 @@ DROP TABLE IF EXISTS
 CREATE TABLE IF NOT EXISTS "mechanic" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "mechanic" varchar(50) NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),    
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "author" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "firstname" varchar(50) NOT NULL,
     "lastname" varchar(50) NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "designer" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "firstname" varchar(50) NOT NULL,
     "lastname" varchar(50) NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "review" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "boardgame_reviewed" varchar(50) NOT NULL,
     "review_url" text NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "rule" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "boardgame_related" varchar(50) NOT NULL,
     "rule_url" text NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "editor" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "editor_name" varchar(50) NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "editor_name" varchar(50) NOT NULL UNIQUE,
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "duration" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "duration" integer NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "duration" integer NOT NULL UNIQUE,
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "age" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "age" integer NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "age" integer NOT NULL UNIQUE,
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "player" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "player" varchar(20) NOT NULL,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "player" varchar(10) NOT NULL,
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "boardgame" (
@@ -88,7 +97,8 @@ CREATE TABLE IF NOT EXISTS "boardgame" (
     "playstore_url" text,
     "bga_url" text,
     "gamepark_url" text,
-    "created_at" timestamptz NOT NULL DEFAULT NOW()
+    "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "boardgame_has_mechanic" (
@@ -96,6 +106,7 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_mechanic" (
     "mechanic_id" integer NOT NULL REFERENCES "mechanic" ("id") ON DELETE CASCADE,
     "boardgame_id" integer NOT NULL REFERENCES "boardgame" ("id") ON DELETE CASCADE,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz,
     UNIQUE ("mechanic_id", "boardgame_id")
 );
 
@@ -104,6 +115,7 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_author" (
     "author_id" integer NOT NULL REFERENCES "author" ("id") ON DELETE CASCADE,
     "boardgame_id" integer NOT NULL REFERENCES "boardgame" ("id") ON DELETE CASCADE,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz,
     UNIQUE ("author_id", "boardgame_id")
 );
 
@@ -112,6 +124,7 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_designer" (
     "designer_id" integer NOT NULL REFERENCES "designer" ("id") ON DELETE CASCADE,
     "boardgame_id" integer NOT NULL REFERENCES "boardgame" ("id") ON DELETE CASCADE,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz,
     UNIQUE ("designer_id", "boardgame_id")
 );
 
@@ -120,6 +133,7 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_review" (
     "review_id" integer NOT NULL REFERENCES "review" ("id") ON DELETE CASCADE,
     "boardgame_id" integer NOT NULL REFERENCES "boardgame" ("id") ON DELETE CASCADE,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz,
     UNIQUE ("review_id", "boardgame_id")
 );
 
@@ -128,6 +142,7 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_rule" (
     "rule_id" integer NOT NULL REFERENCES "rule" ("id") ON DELETE CASCADE,
     "boardgame_id" integer NOT NULL REFERENCES "boardgame" ("id") ON DELETE CASCADE,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
+    "updated_at" timestamptz,
     UNIQUE ("rule_id", "boardgame_id")
 );
 
