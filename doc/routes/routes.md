@@ -19,3 +19,13 @@
 | GET | /ages/:age | Display all the boardgame with an age filter | Done |
 | PATCH | /ages/:age | Update an age category | ? |
 | DELETE | /ages/:age | Delete an age category | Done |
+
+## Author
+
+| Method | URL | Action | Status |
+| --- | --- | --- | --- |
+| GET | /authors | Display all the boardgames by author | Done |
+| POST | /authors | Create a new author | Done |
+| GET | /authors/:author | Display all the boardgame with an author filter | Done |
+| PATCH | /authors/:author | Update an author | ? |
+| DELETE | /authors/:author | Delete an author | Done |

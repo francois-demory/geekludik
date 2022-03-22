@@ -4,11 +4,7 @@ const sequelize = require('../db');
 class Author extends Model {}
 
 Author.init({
-    firstname: {
-        type: DataTypes.STRING(50),
-        allowNull: false
-    },
-    lastname: {
+    author_name: {
         type: DataTypes.STRING(50),
         allowNull: false
     }

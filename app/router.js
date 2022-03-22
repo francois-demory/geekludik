@@ -1,5 +1,6 @@
 const express = require('express');
 const ageController = require('./controllers/ageController');
+const authorController = require('./controllers/authorController');
 const boardgameController = require('./controllers/boardgameController');
 
 const router = express.Router();
@@ -15,6 +16,9 @@ router.get('/ages', ageController.getAll);
 router.get('/ages/:age', ageController.getBoardgameByAge);
 router.post('/ages', ageController.create);
 router.delete('/ages', ageController.delete);
+
+router.get('/authors', authorController.getAll);
+router.get('/authors/:author', authorController.getBoardgameByAuthor);
 
 // 404
 router.use((req, res) => {
