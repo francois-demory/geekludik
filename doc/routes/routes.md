@@ -34,7 +34,26 @@
 | Method | URL | Action | Status |
 | --- | --- | --- | --- |
 | GET | /designers | Display all the boardgames by author | Done |
-| POST | /designers | Create a new author |  |
-| GET | /designers/designer | Display all the boardgame with an author filter |  |
-| PATCH | /designers/:designer | Update an author |  |
-| DELETE | /designers/:designer | Delete an author |  |
+| POST | /designers | Create a new author | Done |
+| GET | /designers/designer | Display all the boardgame with an author filter | Done |
+| PATCH | /designers/:id | Update an author | Done |
+| DELETE | /designers/:id | Delete an author | Done |
+
+## Duration
+
+| Method | URL | Action | Status |
+| --- | --- | --- | --- |
+| GET | /durations | Display all the boardgames by duration | Done |
+| POST | /durations | Create a new duration category | Done |
+| GET | /durations/:id | Display all the boardgame with a duration filter | Done |
+| DELETE | /durations/:id | Delete a duration category | Done |
+
+## Editor
+
+## Mechanic
+
+## Player
+
+## Review
+
+## Rule

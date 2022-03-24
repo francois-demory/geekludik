@@ -3,6 +3,7 @@ const ageController = require('./controllers/ageController');
 const authorController = require('./controllers/authorController');
 const boardgameController = require('./controllers/boardgameController');
 const designerController = require('./controllers/designerController');
+const durationController = require('./controllers/durationController');
 
 const router = express.Router();
 
@@ -25,6 +26,15 @@ router.patch('/authors/:id', authorController.update);
 router.delete('/authors/:id', authorController.delete);
 
 router.get('/designers', designerController.getAll);
+router.get('/designers/designer', designerController.getBoardgameByDesigner);
+router.post('/designers', designerController.create);
+router.patch('/designers/:id', designerController.update);
+router.delete('/designers/:id', designerController.delete);
+
+router.get('/durations', durationController.getAll);
+router.get('/durations/:duration', durationController.getBoardgameByDuration);
+router.post('/durations', durationController.create);
+router.delete('/durations/:id', durationController.delete);
 
 // 404
 router.use((req, res) => {

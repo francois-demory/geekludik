@@ -1,11 +1,11 @@
-const { Age } = require('../models');
+const { Duration } = require('../models');
 
-const ageController = {
+const durationController = {
     async getAll(req, res, next) {
         try {
-            const ages = await Age.findAll();
-            if(ages){
-                return res.json(ages);
+            const durations = await Duration.findAll();
+            if(durations){
+                return res.json(durations);
             }
             next();
         } catch(error) {
@@ -13,16 +13,16 @@ const ageController = {
         }
     },
 
-    async getBoardgameByAge(req, res, next) {
+    async getBoardgameByDuration(req, res, next) {
         try {
-            const boardgamesByAge = await Age.findOne({
+            const boardgamesByDuration = await Duration.findOne({
                 where: {
-                    age: req.params.age
+                    duration: req.params.duration
                 },
                 include: ['boardgames']
             });
-            if(boardgamesByAge){
-                return res.json(boardgamesByAge);
+            if(boardgamesByDuration){
+                return res.json(boardgamesByDuration);
             }
             next();
         } catch(error) {
@@ -32,17 +32,17 @@ const ageController = {
 
     async create(req, res, next) {
         try {
-            const foundAge = await Age.findOne({
+            const foundDuration = await Duration.findOne({
                 where: {
-                    age: req.body.age
+                    duration: req.body.duration
                 }
             });
-            if(foundAge){   
-                return res.json(foundAge);
+            if(foundDuration){   
+                return res.json(foundDuration);
             }
             else {
-                const newAge = await Age.create(req.body);
-                return res.json(newAge);
+                const newDuration = await Duration.create(req.body);
+                return res.json(newDuration);
             }
         } catch(error) {
             res.status(400).json({
@@ -53,7 +53,7 @@ const ageController = {
 
     async delete(req, res, next) {
         try{
-            const result = await Age.destroy({
+            const result = await Duration.destroy({
                 where: {
                     id: req.params.id
                 }
@@ -74,4 +74,4 @@ const ageController = {
 
 }
 
-module.exports = ageController;
+module.exports = durationController;
