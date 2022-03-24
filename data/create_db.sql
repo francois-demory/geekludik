@@ -27,14 +27,16 @@ CREATE TABLE IF NOT EXISTS "mechanic" (
 
 CREATE TABLE IF NOT EXISTS "author" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "author_name" varchar(50) NOT NULL,
+    "firstname" varchar(50) NOT NULL,
+    "lastname" varchar(50) NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
     "updated_at" timestamptz
 );
 
 CREATE TABLE IF NOT EXISTS "designer" (
     "id" integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "designer_name" varchar(50) NOT NULL,
+    "firstname" varchar(50) NOT NULL,
+    "lastname" varchar(50) NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
     "updated_at" timestamptz
 );
@@ -149,11 +151,11 @@ CREATE TABLE IF NOT EXISTS "boardgame_has_rule" (
 INSERT INTO "mechanic" ("mechanic") VALUES
 ('Dés'), ('Deck building'), ('Affrontement'), ('Escarmouche');
 
-INSERT INTO "author" ("author_name") VALUES
-('Nate Chatellier'), ('Manny Trembley'), ('Isaac Childres');
+INSERT INTO "author" ("firstname", "lastname") VALUES
+('Nate', 'Chatellier'), ('Manny', 'Trembley'), ('Isaac', 'Childres');
 
-INSERT INTO "designer" ("designer_name") VALUES
-('David Bock'), ('Manny Trembley'), ('Cat Bock'), ('David Demaret');
+INSERT INTO "designer" ("firstname", "lastname") VALUES
+('David', 'Bock'), ('Manny', 'Trembley'), ('Cat', 'Bock'), ('David', 'Demaret');
 
 INSERT INTO "review" ("boardgame_reviewed", "review_url") VALUES
 ('Dice Throne S1', 'https://lepalaisdemidgard.fr/jeux-strategie/dice-throne/#:~:text=Dice%20Throne%20est%20un%20pur,combats%20rapides%20mais%20assez%20strat%C3%A9gique.'),

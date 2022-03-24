@@ -17,9 +17,10 @@ const authorController = {
         try {
             const boardgamesByAuthor = await Author.findOne({
                 where: {
-                    author_name: req.params.author
+                    firstname: req.query.firstname,
+                    lastname: req.query.lastname
                 },
-                include: ['boardgames']
+                include: ['boardgames'],
             });
             if(boardgamesByAuthor){
                 return res.json(boardgamesByAuthor);
@@ -29,6 +30,62 @@ const authorController = {
             next(error);
         }
     },
+
+    async create(req, res, next) {
+        try {
+            const foundAuthor = await Author.findOne({
+                where: {
+                    firstname: req.query.firstname,
+                    lastname: req.query.lastname
+                }
+            });
+            if(foundAuthor){   
+                return res.json(foundAuthor);
+            }
+            else {
+                const newAuthor = await Author.create(req.query);
+                return res.json(newAuthor);
+            }
+        } catch(error) {
+            res.status(400).json({
+              error: error.message
+            });
+        }
+    },
+
+    async update(req, res, next) {
+        try {
+            const foundAuthor = await Author.findByPk(req.params.id);
+
+            foundAuthor.update(req.body);
+
+            res.json(foundAuthor);
+        } catch(error) {
+            res.status(400).json({
+              error: error.message
+            });
+        }
+    },
+
+    async delete(req, res, next) {
+        try{
+            const result = await Author.destroy({
+                where: {
+                    id: req.params.id
+                }
+            });
+            if(result){
+                return res.json({
+                    ok: true
+                })
+            }
+        }
+        catch(error) {
+            res.status(400).json({
+                error: error.message
+              });
+        }
+    }
 }
 
 module.exports = authorController;
