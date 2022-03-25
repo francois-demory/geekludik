@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS "boardgame" (
     "playstore_url" text,
     "bga_url" text,
     "gamepark_url" text,
+    "picture_url" text NOT NULL,
     "created_at" timestamptz NOT NULL DEFAULT NOW(),
     "updated_at" timestamptz
 );
@@ -179,9 +180,9 @@ INSERT INTO "age" ("age") VALUES
 INSERT INTO "player" ("player") VALUES
 ('1'), ('1-2'), ('1-3'), ('1-5'), ('2-5'), ('3-6');
 
-INSERT INTO "boardgame" ("name", "editor_id", "duration_id", "age_id", "player_id", "steam_url", "appstore_url", "playstore_url", "bga_url", "gamepark_url") VALUES
-('Dice Throne S1', 1, 4, 3, 5, '', '', '', '', ''),
-('Gloomhaven', 2, 5, 7, 3, '', '', '', '', '');
+INSERT INTO "boardgame" ("name", "editor_id", "duration_id", "age_id", "player_id", "steam_url", "appstore_url", "playstore_url", "bga_url", "gamepark_url", "picture_url") VALUES
+('Dice Throne S1', 1, 4, 3, 5, '', '', '', '', '', 'https://cdn2.philibertnet.com/395556-large_default/dice-throne-season-one.jpg'),
+('Gloomhaven', 2, 5, 7, 3, '', '', '', '', '', 'https://cdn3.philibertnet.com/454599-large_default/gloomhaven-aventures-a-havrenuit.jpg');
 
 INSERT INTO "boardgame_has_mechanic" ("mechanic_id", "boardgame_id") VALUES
 (1, 1),

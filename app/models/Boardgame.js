@@ -27,6 +27,10 @@ Boardgame.init({
     gamepark_url: {
         type: DataTypes.TEXT,
         allowNull: true
+    },
+    picture_url: {
+        type: DataTypes.TEXT,
+        allowNull: false
     }
 }, {
     sequelize,

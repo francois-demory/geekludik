@@ -139,11 +139,11 @@ const boardgameController = {
 
                 foundBoardgame.update(req.body);
 
-                boardgameController.addMechanic(foundBoardgame, req.body);
-                boardgameController.addAuthor(foundBoardgame, req.body);
-                boardgameController.addDesigner(foundBoardgame, req.body);
-                boardgameController.addReview(foundBoardgame, req.body);
-                boardgameController.addRule(foundBoardgame, req.body);
+                boardgameController.updateMechanic(foundBoardgame, req.body);
+                boardgameController.updateAuthor(foundBoardgame, req.body);
+                // boardgameController.addDesigner(foundBoardgame, req.body);
+                // boardgameController.addReview(foundBoardgame, req.body);
+                // boardgameController.addRule(foundBoardgame, req.body);
 
                 return res.json(foundBoardgame);
             }
@@ -159,8 +159,7 @@ const boardgameController = {
     async addMechanic(boardgame, body){
         if(!body.mechanic)
             return;
-            
-        await boardgame.setMechanics([]);
+
         const mechanics = JSON.parse(body.mechanic);
         for (let mechanic of mechanics){
             mechanic = await Mechanic.findOrCreate({
@@ -241,7 +240,7 @@ const boardgameController = {
                     rule_url: rule.rule_url                    
                 }
             });
-            await boardgame.addReview(rule[0]);
+            await boardgame.addRule(rule[0]);
             await boardgame.reload();
         }
     },
@@ -264,6 +263,66 @@ const boardgameController = {
             res.status(400).json({
                 error: error.message
               });
+        }
+    },
+
+    async updateMechanic(boardgame, body){
+        let boardgameMechanics = [];
+        const registeredMechanics = await boardgame.getMechanics();
+        for (let mechanic of registeredMechanics){
+            boardgameMechanics.push(mechanic.id);
+        }
+
+        let newMechanics = [];
+        const mechanics = JSON.parse(body.mechanic);
+
+        for (let mechanic of mechanics){
+            mechanic = await Mechanic.findOrCreate({
+                where: {
+                    mechanic : mechanic.mechanic
+                }
+            });
+            newMechanics.push(mechanic[0].id);
+        }
+        const mechanicToDelete = boardgameMechanics.filter(mechanic => !newMechanics.includes(mechanic));
+        for (let mechanic of mechanicToDelete){
+            await boardgame.removeMechanic(mechanic);
+        }
+
+        const mechanicToAdd = newMechanics.filter(mechanic => !boardgameMechanics.includes(mechanic));
+        for (let mechanic of mechanicToAdd){
+            await boardgame.addMechanic(mechanic);
+        }
+    },
+
+    async updateAuthor(boardgame, body){
+        let boardgameAuthors = [];
+        const registeredAuthors = await boardgame.getAuthors();
+        for (let author of registeredAuthors){
+            boardgameAuthors.push(author.id);
+        }
+
+        let newAuthors = [];
+        const authors = JSON.parse(body.author);
+
+        for (let author of authors){
+            author = await Author.findOrCreate({
+                where: {
+                    firstname : author.firstname,
+                    lastname: author.lastname
+                }
+            });
+            newAuthors.push(author[0].id);
+        }
+
+        const authorToDelete = boardgameAuthors.filter(author => !newAuthors.includes(author));
+        for (let author of authorToDelete){
+            await boardgame.removeAuthor(author);
+        }
+
+        const authorToAdd = newAuthors.filter(author => !boardgameAuthors.includes(author));
+        for (let author of authorToAdd){
+            await boardgame.addAuthor(author);
         }
     }
 }
