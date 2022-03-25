@@ -31,7 +31,7 @@ const mechanicController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.mechanic = sanitizer.sanitize(req.body.mechanic);
 
@@ -59,10 +59,11 @@ const mechanicController = {
             req.body.mechanic = sanitizer.sanitize(req.body.mechanic);
 
             const foundMechanic = await Mechanic.findByPk(req.params.id);
-
-            foundMechanic.update(req.body);
-
-            res.json(foundMechanic);
+            if(foundMechanic) {
+                foundMechanic.update(req.body);
+                res.json(foundMechanic);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -82,6 +83,7 @@ const mechanicController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

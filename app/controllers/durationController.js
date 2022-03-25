@@ -31,7 +31,7 @@ const durationController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.duration = sanitizer.sanitize(req.body.duration);
 
@@ -59,10 +59,11 @@ const durationController = {
             req.body.duration = sanitizer.sanitize(req.body.duration);
             
             const foundDuration = await Duration.findByPk(req.params.id);
-
-            foundDuration.update(req.body);
-
-            res.json(foundDuration);
+            if(foundDuration){
+                foundDuration.update(req.body);
+                res.json(foundDuration);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -82,6 +83,7 @@ const durationController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

@@ -32,7 +32,7 @@ const authorController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.query.firstname = sanitizer.sanitize(req.query.firstname);
             req.query.lastname = sanitizer.sanitize(req.query.lastname);
@@ -63,10 +63,11 @@ const authorController = {
             req.body.lastname = sanitizer.sanitize(req.body.lastname);
 
             const foundAuthor = await Author.findByPk(req.params.id);
-
-            foundAuthor.update(req.body);
-
-            res.json(foundAuthor);
+            if(foundAuthor){
+                foundAuthor.update(req.body);
+                res.json(foundAuthor);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -86,6 +87,7 @@ const authorController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

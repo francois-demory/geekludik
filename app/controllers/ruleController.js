@@ -14,7 +14,7 @@ const ruleController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.rule_url = sanitizer.sanitize(req.body.rule_url);
             req.body.boardgame_related = sanitizer.sanitize(boardgame_related);
@@ -44,10 +44,11 @@ const ruleController = {
             req.body.boardgame_related = sanitizer.sanitize(boardgame_related);
             
             const foundRule = await Rule.findByPk(req.params.id);
-
-            foundRule.update(req.body);
-
-            res.json(foundRule);
+            if(foundRule){
+                foundRule.update(req.body);
+                res.json(foundRule);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -67,6 +68,7 @@ const ruleController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

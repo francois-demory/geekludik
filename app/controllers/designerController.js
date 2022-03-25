@@ -32,7 +32,7 @@ const designerController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.query.firstname = sanitizer.sanitize(req.query.firstname);
             req.query.lastname = sanitizer.sanitize(req.query.lastname);
@@ -63,10 +63,11 @@ const designerController = {
             req.body.lastname = sanitizer.sanitize(req.body.lastname);
             
             const foundDesigner = await Designer.findByPk(req.params.id);
-
-            foundDesigner.update(req.body);
-
-            res.json(foundDesigner);
+            if(foundDesigner) {
+                foundDesigner.update(req.body);
+                res.json(foundDesigner);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -86,6 +87,7 @@ const designerController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

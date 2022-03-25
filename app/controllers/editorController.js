@@ -31,7 +31,7 @@ const editorController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.editor_name = sanitizer.sanitize(req.body.editor_name);
 
@@ -59,10 +59,11 @@ const editorController = {
             req.body.editor_name = sanitizer.sanitize(req.body.editor_name);
 
             const foundEditor = await Editor.findByPk(req.params.id);
-
-            foundEditor.update(req.body);
-
-            res.json(foundEditor);
+            if(foundEditor){
+                foundEditor.update(req.body);
+                res.json(foundEditor);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -82,6 +83,7 @@ const editorController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

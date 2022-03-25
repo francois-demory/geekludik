@@ -19,11 +19,13 @@ router.get('/', (req, res) => {
 router.get('/boardgames', boardgameController.getAll);
 router.get('/boardgames/:name', boardgameController.getBoardgameByName);
 router.post('/boardgames', boardgameController.create);
+router.patch('/boardgames/boardgame/:id', boardgameController.update);
+router.delete('/boardgames/boardgame/:id', boardgameController.delete);
 
 router.get('/ages', ageController.getAll);
 router.get('/ages/:age', ageController.getBoardgameByAge);
 router.post('/ages', ageController.create);
-router.post('/ages/:id', ageController.update);
+router.patch('/ages/:id', ageController.update);
 router.delete('/ages/:id', ageController.delete);
 
 router.get('/authors', authorController.getAll);

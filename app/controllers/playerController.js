@@ -31,7 +31,7 @@ const playerController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.player = sanitizer.sanitize(req.body.player);
 
@@ -59,10 +59,11 @@ const playerController = {
             req.body.player = sanitizer.sanitize(req.body.player);
 
             const foundPlayer = await Player.findByPk(req.params.id);
-
-            foundPlayer.update(req.body);
-
-            res.json(foundPlayer);
+            if(foundPlayer){
+                foundPlayer.update(req.body);
+                res.json(foundPlayer);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -82,6 +83,7 @@ const playerController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

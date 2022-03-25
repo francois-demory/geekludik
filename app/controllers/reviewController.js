@@ -14,7 +14,7 @@ const reviewController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
 
             req.body.review_url = sanitizer.sanitize(req.body.review_url);
@@ -45,10 +45,11 @@ const reviewController = {
             req.body.boardgame_reviewed = sanitizer.sanitize(boardgame_reviewed);
 
             const foundReview = await Review.findByPk(req.params.id);
-
-            foundReview.update(req.body);
-
-            res.json(foundReview);
+            if(foundReview){
+                foundReview.update(req.body);
+                res.json(foundReview);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -68,6 +69,7 @@ const reviewController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({

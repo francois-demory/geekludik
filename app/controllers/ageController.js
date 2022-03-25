@@ -31,7 +31,7 @@ const ageController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             req.body.age = sanitizer.sanitize(req.body.age);
 
@@ -60,9 +60,11 @@ const ageController = {
             
             const foundAge = await Age.findByPk(req.params.id);
 
-            foundAge.update(req.body);
-
-            res.json(foundAge);
+            if(foundAge) {
+                foundAge.update(req.body);
+                res.json(foundAge);
+            }
+            next();
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -82,6 +84,7 @@ const ageController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({
