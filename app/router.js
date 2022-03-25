@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
 
 router.get('/boardgames', boardgameController.getAll);
 router.get('/boardgames/:name', boardgameController.getBoardgameByName);
+router.post('/boardgames', boardgameController.create);
 
 router.get('/ages', ageController.getAll);
 router.get('/ages/:age', ageController.getBoardgameByAge);
