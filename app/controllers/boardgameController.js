@@ -33,7 +33,7 @@ const boardgameController = {
         }
     },
 
-    async create(req, res, next) {
+    async create(req, res) {
         try {
             Object.keys(req.body).forEach(key => {
                 value = sanitizer.sanitize(req.body[key]);
@@ -47,6 +47,7 @@ const boardgameController = {
             });
             
             if(foundBoardgame){
+
                 return res.json(foundBoardgame);
             }
             else {
@@ -158,7 +159,8 @@ const boardgameController = {
     async addMechanic(boardgame, body){
         if(!body.mechanic)
             return;
-        
+            
+        await boardgame.setMechanics([]);
         const mechanics = JSON.parse(body.mechanic);
         for (let mechanic of mechanics){
             mechanic = await Mechanic.findOrCreate({
@@ -176,6 +178,7 @@ const boardgameController = {
         if(!body.author)
             return;
 
+        await boardgame.setAuthors([]);
         const authors = JSON.parse(body.author);
         for (let author of authors){
             author = await Author.findOrCreate({
@@ -192,7 +195,8 @@ const boardgameController = {
     async addDesigner(boardgame, body){
         if(!body.designer)
             return;
-        
+
+        await boardgame.setDesigners([]);
         const designers = JSON.parse(body.designer);
         for (let designer of designers){
             designer = await Designer.findOrCreate({
@@ -210,6 +214,7 @@ const boardgameController = {
         if(!body.review)
             return;
 
+        await boardgame.setReviews([]);
         const reviews = JSON.parse(body.review);
         for (let review of reviews){
             review = await Review.findOrCreate({
@@ -227,6 +232,7 @@ const boardgameController = {
         if(!body.rule)
             return;
 
+        await boardgame.setRules([]);
         const rules = JSON.parse(body.rule);
         for (let rule of rules){
             rule = await Rule.findOrCreate({
@@ -252,6 +258,7 @@ const boardgameController = {
                     ok: true
                 })
             }
+            next();
         }
         catch(error) {
             res.status(400).json({
