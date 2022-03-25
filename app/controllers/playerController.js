@@ -1,12 +1,12 @@
-const { Age } = require('../models');
+const { Player } = require('../models');
 const sanitizer = require('sanitizer');
 
-const ageController = {
+const playerController = {
     async getAll(req, res, next) {
         try {
-            const ages = await Age.findAll();
-            if(ages){
-                return res.json(ages);
+            const players = await Player.findAll();
+            if(players){
+                return res.json(players);
             }
             next();
         } catch(error) {
@@ -14,16 +14,16 @@ const ageController = {
         }
     },
 
-    async getBoardgameByAge(req, res, next) {
+    async getBoardgameByPlayer(req, res, next) {
         try {
-            const boardgamesByAge = await Age.findOne({
+            const boardgamesByPlayer = await Player.findOne({
                 where: {
-                    age: req.params.age
+                    player: req.params.player,
                 },
-                include: ['boardgames']
+                include: ['boardgames'],
             });
-            if(boardgamesByAge){
-                return res.json(boardgamesByAge);
+            if(boardgamesByPlayer){
+                return res.json(boardgamesByPlayer);
             }
             next();
         } catch(error) {
@@ -33,19 +33,19 @@ const ageController = {
 
     async create(req, res, next) {
         try {
-            req.body.age = sanitizer.sanitize(req.body.age);
+            req.body.player = sanitizer.sanitize(req.body.player);
 
-            const foundAge = await Age.findOne({
+            const foundPlayer = await Player.findOne({
                 where: {
-                    age: req.body.age
+                    player: req.body.player,
                 }
             });
-            if(foundAge){   
-                return res.json(foundAge);
+            if(foundPlayer){   
+                return res.json(foundPlayer);
             }
             else {
-                const newAge = await Age.create(req.body);
-                return res.json(newAge);
+                const newPlayer = await Player.create(req.body);
+                return res.json(newPlayer);
             }
         } catch(error) {
             res.status(400).json({
@@ -56,13 +56,13 @@ const ageController = {
 
     async update(req, res, next) {
         try {
-            req.body.age = sanitizer.sanitize(req.body.age);
-            
-            const foundAge = await Age.findByPk(req.params.id);
+            req.body.player = sanitizer.sanitize(req.body.player);
 
-            foundAge.update(req.body);
+            const foundPlayer = await Player.findByPk(req.params.id);
 
-            res.json(foundAge);
+            foundPlayer.update(req.body);
+
+            res.json(foundPlayer);
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -72,7 +72,7 @@ const ageController = {
 
     async delete(req, res, next) {
         try{
-            const result = await Age.destroy({
+            const result = await Player.destroy({
                 where: {
                     id: req.params.id
                 }
@@ -90,7 +90,6 @@ const ageController = {
         }
     }
 
-
 }
 
-module.exports = ageController;
+module.exports = playerController;

@@ -1,4 +1,5 @@
 const { Duration } = require('../models');
+const sanitizer = require('sanitizer');
 
 const durationController = {
     async getAll(req, res, next) {
@@ -32,6 +33,8 @@ const durationController = {
 
     async create(req, res, next) {
         try {
+            req.body.duration = sanitizer.sanitize(req.body.duration);
+
             const foundDuration = await Duration.findOne({
                 where: {
                     duration: req.body.duration
@@ -44,6 +47,22 @@ const durationController = {
                 const newDuration = await Duration.create(req.body);
                 return res.json(newDuration);
             }
+        } catch(error) {
+            res.status(400).json({
+              error: error.message
+            });
+        }
+    },
+
+    async update(req, res, next) {
+        try {
+            req.body.duration = sanitizer.sanitize(req.body.duration);
+            
+            const foundDuration = await Duration.findByPk(req.params.id);
+
+            foundDuration.update(req.body);
+
+            res.json(foundDuration);
         } catch(error) {
             res.status(400).json({
               error: error.message

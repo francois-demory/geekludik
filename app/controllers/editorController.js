@@ -1,4 +1,5 @@
 const { Editor } = require('../models');
+const sanitizer = require('sanitizer');
 
 const editorController = {
     async getAll(req, res, next) {
@@ -32,6 +33,8 @@ const editorController = {
 
     async create(req, res, next) {
         try {
+            req.body.editor_name = sanitizer.sanitize(req.body.editor_name);
+
             const foundEditor = await Editor.findOne({
                 where: {
                     editor_name: req.body.editor_name,
@@ -53,6 +56,8 @@ const editorController = {
 
     async update(req, res, next) {
         try {
+            req.body.editor_name = sanitizer.sanitize(req.body.editor_name);
+
             const foundEditor = await Editor.findByPk(req.params.id);
 
             foundEditor.update(req.body);

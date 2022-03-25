@@ -1,12 +1,12 @@
-const { Age } = require('../models');
+const { Mechanic } = require('../models');
 const sanitizer = require('sanitizer');
 
-const ageController = {
+const mechanicController = {
     async getAll(req, res, next) {
         try {
-            const ages = await Age.findAll();
-            if(ages){
-                return res.json(ages);
+            const mechanics = await Mechanic.findAll();
+            if(mechanics){
+                return res.json(mechanics);
             }
             next();
         } catch(error) {
@@ -14,16 +14,16 @@ const ageController = {
         }
     },
 
-    async getBoardgameByAge(req, res, next) {
+    async getBoardgameByMehcanic(req, res, next) {
         try {
-            const boardgamesByAge = await Age.findOne({
+            const boardgamesByMechanic = await Mechanic.findOne({
                 where: {
-                    age: req.params.age
+                    mechanic: req.params.mechanic,
                 },
-                include: ['boardgames']
+                include: ['boardgames'],
             });
-            if(boardgamesByAge){
-                return res.json(boardgamesByAge);
+            if(boardgamesByMechanic){
+                return res.json(boardgamesByMechanic);
             }
             next();
         } catch(error) {
@@ -33,19 +33,19 @@ const ageController = {
 
     async create(req, res, next) {
         try {
-            req.body.age = sanitizer.sanitize(req.body.age);
+            req.body.mechanic = sanitizer.sanitize(req.body.mechanic);
 
-            const foundAge = await Age.findOne({
+            const foundMechanic = await Mechanic.findOne({
                 where: {
-                    age: req.body.age
+                    mechanic: req.body.mechanic,
                 }
             });
-            if(foundAge){   
-                return res.json(foundAge);
+            if(foundMechanic){   
+                return res.json(foundMechanic);
             }
             else {
-                const newAge = await Age.create(req.body);
-                return res.json(newAge);
+                const newMechanic = await Mechanic.create(req.body);
+                return res.json(newMechanic);
             }
         } catch(error) {
             res.status(400).json({
@@ -56,13 +56,13 @@ const ageController = {
 
     async update(req, res, next) {
         try {
-            req.body.age = sanitizer.sanitize(req.body.age);
-            
-            const foundAge = await Age.findByPk(req.params.id);
+            req.body.mechanic = sanitizer.sanitize(req.body.mechanic);
 
-            foundAge.update(req.body);
+            const foundMechanic = await Mechanic.findByPk(req.params.id);
 
-            res.json(foundAge);
+            foundMechanic.update(req.body);
+
+            res.json(foundMechanic);
         } catch(error) {
             res.status(400).json({
               error: error.message
@@ -72,7 +72,7 @@ const ageController = {
 
     async delete(req, res, next) {
         try{
-            const result = await Age.destroy({
+            const result = await Mechanic.destroy({
                 where: {
                     id: req.params.id
                 }
@@ -90,7 +90,6 @@ const ageController = {
         }
     }
 
-
 }
 
-module.exports = ageController;
+module.exports = mechanicController;

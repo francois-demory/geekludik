@@ -1,4 +1,5 @@
 const { Designer } = require('../models');
+const sanitizer = require('sanitizer');
 
 const designerController = {
     async getAll(req, res, next) {
@@ -33,6 +34,9 @@ const designerController = {
 
     async create(req, res, next) {
         try {
+            req.query.firstname = sanitizer.sanitize(req.query.firstname);
+            req.query.lastname = sanitizer.sanitize(req.query.lastname);
+
             const foundDesigner = await Designer.findOne({
                 where: {
                     firstname: req.query.firstname,
@@ -55,6 +59,9 @@ const designerController = {
 
     async update(req, res, next) {
         try {
+            req.body.firstname = sanitizer.sanitize(req.body.firstname);
+            req.body.lastname = sanitizer.sanitize(req.body.lastname);
+            
             const foundDesigner = await Designer.findByPk(req.params.id);
 
             foundDesigner.update(req.body);

@@ -1,4 +1,5 @@
 const { Author } = require('../models');
+const sanitizer = require('sanitizer');
 
 const authorController = {
     async getAll(req, res, next) {
@@ -33,6 +34,9 @@ const authorController = {
 
     async create(req, res, next) {
         try {
+            req.query.firstname = sanitizer.sanitize(req.query.firstname);
+            req.query.lastname = sanitizer.sanitize(req.query.lastname);
+
             const foundAuthor = await Author.findOne({
                 where: {
                     firstname: req.query.firstname,
@@ -55,6 +59,9 @@ const authorController = {
 
     async update(req, res, next) {
         try {
+            req.body.firstname = sanitizer.sanitize(req.body.firstname);
+            req.body.lastname = sanitizer.sanitize(req.body.lastname);
+
             const foundAuthor = await Author.findByPk(req.params.id);
 
             foundAuthor.update(req.body);

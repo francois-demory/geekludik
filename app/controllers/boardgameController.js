@@ -15,7 +15,7 @@ const boardgameController = {
         }
     },
 
-    async getOneById(req, res, next) {
+    async getBoardgameByName(req, res, next) {
         try {
             const boardgame = await Boardgame.findOne({
                 where: {
